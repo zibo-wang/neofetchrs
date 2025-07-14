@@ -9,6 +9,10 @@ repository = "https://github.com/dylanaraps/neofetch"
 keywords = ["system", "info", "cli", "terminal"]
 categories = ["command-line-utilities"]
 
+[[bin]]
+name = "neofetch"
+path = "src/main.rs"
+
 [dependencies]
 clap = { version = "4.0", features = ["derive"] }
 serde = { version = "1.0", features = ["derive"] }
@@ -26,3 +30,23 @@ nix = "0.27"
 
 [target.'cfg(windows)'.dependencies]
 winapi = { version = "0.3", features = ["winuser", "sysinfoapi"] }
+
+[profile.release]
+# Enable maximum optimizations
+opt-level = 3
+# Enable link-time optimization for better performance
+lto = true
+# Reduce binary size by removing debug info
+debug = false
+# Enable fat LTO for maximum optimization (slower compile, faster runtime)
+codegen-units = 1
+# Panic on overflow in release mode for safety
+overflow-checks = false
+# Strip symbols to reduce binary size
+strip = true
+
+[profile.release-with-debug]
+# Release build but with debug info for profiling
+inherits = "release"
+debug = true
+strip = false
